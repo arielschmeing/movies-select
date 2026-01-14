@@ -1,14 +1,14 @@
 package movies.select.com.br.backend.application.service.auth;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import movies.select.com.br.backend.application.service.user.DetailUserServiceImpl;
 import movies.select.com.br.backend.application.service.user.FindUserServiceImpl;
 import movies.select.com.br.backend.application.usecase.auth.LoginUseCase;
 import movies.select.com.br.backend.domain.auth.LoginRequest;
 import movies.select.com.br.backend.domain.user.User;
-import movies.select.com.br.backend.domain.user.UserResponse;
-import movies.select.com.br.backend.utils.mapper.UserMapper;
+import movies.select.com.br.backend.domain.user.UserDetailResponse;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import static org.springframework.http.HttpHeaders.SET_COOKIE;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Service
@@ -28,11 +29,11 @@ public class LoginServiceImpl implements LoginUseCase {
     private final FindUserServiceImpl findUserService;
     private final JwtEncoder jwtEncoder;
     private final PasswordEncoder passwordEncoder;
-    private final UserMapper userMapper;
+    private final DetailUserServiceImpl detailUserService;
 
     @Transactional
     @Override
-    public UserResponse login(LoginRequest request, HttpServletResponse response) {
+    public UserDetailResponse login(LoginRequest request, HttpServletResponse response) {
 
         User user = this.findUserService.byEmail(request.email());
 
@@ -43,13 +44,16 @@ public class LoginServiceImpl implements LoginUseCase {
         JwtClaimsSet jwt = this.jwtClaim(user, expiresIn);
         String token = jwtEncoder.encode(JwtEncoderParameters.from(jwt)).getTokenValue();
 
-        Cookie cookie = new Cookie("ACCESS_TOKEN", token);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(expiresIn.intValue());
+        ResponseCookie cookie = ResponseCookie.from("ACCESS_TOKEN", token)
+                .httpOnly(true)
+                .secure(false)
+                .sameSite("LAX")
+                .path("/")
+                .maxAge(expiresIn.intValue())
+                .build();
 
-        response.addCookie(cookie);
+        response.addHeader(SET_COOKIE, cookie.toString());
 
-        return userMapper.domainToResponse(user);
+        return this.detailUserService.detail(user.getId());
     }
 }

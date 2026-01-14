@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface UserUseCase {
-    UserResponse create(UserRequest user, HttpServletResponse response);
+    UserDetailResponse create(UserRequest user, HttpServletResponse response);
     List<UserResponse> list();
     UserDetailResponse detail(UUID id);
 }

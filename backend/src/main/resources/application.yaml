@@ -6,6 +6,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/movies_select_db
     username: postgres
     password: password
+    external-api-token: ${SPRING_EXTERNAL_API_TOKEN}
+    external-api-url: ${SPRING_EXTERNAL_API_URL}
 
   jpa:
     hibernate:

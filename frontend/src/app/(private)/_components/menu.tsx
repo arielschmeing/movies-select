@@ -5,7 +5,7 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-} from "@/src/components/ui/navigation-menu";
+} from "@/src/components/ui/navigationMenu";
 import { useMenu } from "../_hooks/useMenu";
 import Link from "next/link";
 import MenuHeader from "./header";
@@ -30,8 +30,8 @@ export default function Menu() {
             </NavigationMenuLink>
           </NavigationMenuItem>
         ))}
-        <MenuFooter user={user} />
       </NavigationMenuList>
+      <MenuFooter user={user} />
     </NavigationMenu>
   );
 }

@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import movies.select.com.br.backend.application.service.auth.LoginServiceImpl;
 import movies.select.com.br.backend.application.usecase.auth.AuthUseCase;
 import movies.select.com.br.backend.domain.auth.LoginRequest;
-import movies.select.com.br.backend.domain.user.UserResponse;
+import movies.select.com.br.backend.domain.user.UserDetailResponse;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.OK;
@@ -21,7 +21,7 @@ public class AuthController implements AuthUseCase {
     @PostMapping("/login")
     @ResponseStatus(OK)
     @Override
-    public UserResponse login(@Valid @RequestBody LoginRequest request, HttpServletResponse response) {
+    public UserDetailResponse login(@Valid @RequestBody LoginRequest request, HttpServletResponse response) {
         return this.loginService.login(request, response);
     }
 }

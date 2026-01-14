@@ -7,8 +7,8 @@ import movies.select.com.br.backend.application.service.auth.LoginServiceImpl;
 import movies.select.com.br.backend.application.usecase.user.CreateUserUseCase;
 import movies.select.com.br.backend.domain.auth.LoginRequest;
 import movies.select.com.br.backend.domain.user.User;
+import movies.select.com.br.backend.domain.user.UserDetailResponse;
 import movies.select.com.br.backend.domain.user.UserRequest;
-import movies.select.com.br.backend.domain.user.UserResponse;
 import movies.select.com.br.backend.utils.mapper.UserMapper;
 import movies.select.com.br.backend.utils.validation.user.UserFoundValidator;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,7 +28,7 @@ public class CreateUserServiceImpl implements CreateUserUseCase {
 
     @Transactional
     @Override
-    public UserResponse create(UserRequest request, HttpServletResponse response) {
+    public UserDetailResponse create(UserRequest request, HttpServletResponse response) {
 
         userFoundValidator.validate(request.email());
 

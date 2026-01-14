@@ -30,21 +30,21 @@ public class UserController implements UserUseCase {
     @PostMapping
     @ResponseStatus(CREATED)
     @Override
-    public UserResponse create(@Valid @RequestBody UserRequest user, HttpServletResponse response) {
-        return createUserService.create(user, response);
+    public UserDetailResponse create(@Valid @RequestBody UserRequest user, HttpServletResponse response) {
+        return this.createUserService.create(user, response);
     }
 
     @GetMapping
     @ResponseStatus(OK)
     @Override
     public List<UserResponse> list() {
-        return listUsersService.list();
+        return this.listUsersService.list();
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(OK)
     @Override
     public UserDetailResponse detail(@PathVariable UUID id) {
-        return detailUserService.detail(id);
+        return this.detailUserService.detail(id);
     }
 }

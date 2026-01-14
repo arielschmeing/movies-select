@@ -68,7 +68,8 @@ CREATE TABLE movie_party (
   party_id UUID NOT NULL,
   movie_id BIGINT NOT NULL,
   was_watched BOOLEAN NOT NULL,
-  was_approved BOOLEAN NOT NULL
+  was_approved BOOLEAN NOT NULL,
+  linkedAt TIMESTAMP DEFAULT NOW() NOT NULL
 );
 ALTER TABLE movie_party ADD CONSTRAINT pk_movie_party PRIMARY KEY (id);
 ALTER TABLE movie_party ADD CONSTRAINT uk_movie_party_party_movie UNIQUE (party_id, movie_id);
